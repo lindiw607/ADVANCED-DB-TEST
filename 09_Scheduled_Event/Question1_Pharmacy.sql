@@ -1,0 +1,17 @@
+SET GLOBAL event_scheduler = ON;
+
+DELIMITER $$
+
+CREATE EVENT ev_refresh_sales
+ON SCHEDULE EVERY 1 DAY
+STARTS (
+    CURRENT_DATE
+    + INTERVAL 1 DAY
+    + INTERVAL 15 MINUTE
+)
+DO
+    CALL pr_refresh_sales(
+        CURRENT_DATE - INTERVAL 1 DAY
+    )$$
+
+DELIMITER ;
